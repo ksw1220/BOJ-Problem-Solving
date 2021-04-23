@@ -1,4 +1,7 @@
 #include<stdio.h>
+#include<string>
+using namespace std;
+
 int dis[10];
 bool is_possible(int number) {
 	bool re = true;
@@ -10,6 +13,8 @@ bool is_possible(int number) {
 		}
 		number /= 10;
 	}
+	if(number==0&&dis[0])
+		re=false;
 	return re;
 }
 int main() {
@@ -20,43 +25,21 @@ int main() {
 		scanf("%d", &ch);
 		dis[ch] = true;
 	}
-	int tmp_ch = N;
-	int down = 0, up = 0;
-	bool d_chk = false, u_chk = false;
-	while (tmp_ch >= 0) {
+	int tmp_ch = 0;
+	int ans = N-100;
+	if(ans<0)ans*=-1;
+	while (tmp_ch <=1000001) {
 		if (is_possible(tmp_ch)) {
-			d_chk = true;
-			if (tmp_ch == 0)down++;
-			else {
-				while (tmp_ch > 0) {
-					tmp_ch /= 10;
-					down++;
-				}
-			}
-			break;
-		}
-		tmp_ch--;
-		down++;
-	}
-	tmp_ch = N;
-	while (tmp_ch<=1000000) {
-		if (is_possible(tmp_ch)) {
-			u_chk = true;
-			if (tmp_ch == 0)up++;
-			else {
-				while (tmp_ch > 0) {
-					tmp_ch /= 10;
-					up++;
-				}
-			}break;
+			string s=to_string(tmp_ch);
+			int len=s.length();
+			int diff=N-tmp_ch;
+			if(diff<0)
+				diff*=-1;
+			
+			if(ans>diff+len)ans=diff+len;	
 		}
 		tmp_ch++;
-		up++;
 	}
-	int ans = N - 100;
-	if (ans < 0)ans *= -1;
-	if (d_chk&&ans > down)ans = down;
-	if (u_chk&&ans > up)ans = up;
 	printf("%d", ans);
 	return 0;
 }
