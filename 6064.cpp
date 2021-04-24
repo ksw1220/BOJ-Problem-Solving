@@ -13,15 +13,13 @@ int main(){
     cin>>T;
     while(T--){
         cin>>M>>N>>x>>y;
-
         int k=x,end,answer=-1;
         end=M*N/gcd(M,N);
+        
         while(k<=end){
             int a=k%M,b=k%N;
-            if(a==0)
-                a=M;
-            if(b==0)
-                b=N;
+            if(a==0) a=M;
+            if(b==0) b=N;
             if(a==x&&b==y){
                 answer=k;
                 break;
