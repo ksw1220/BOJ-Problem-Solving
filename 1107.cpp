@@ -5,6 +5,8 @@ using namespace std;
 int dis[10];
 bool is_possible(int number) {
 	bool re = true;
+	if(number==0&&dis[0])
+		re=false;
 	while (number > 0) {
 		int tmp = number % 10;
 		if (dis[tmp]) {
@@ -13,8 +15,6 @@ bool is_possible(int number) {
 		}
 		number /= 10;
 	}
-	if(number==0&&dis[0])
-		re=false;
 	return re;
 }
 int main() {
