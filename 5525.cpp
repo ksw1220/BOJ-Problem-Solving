@@ -24,6 +24,7 @@ int main(){
     cin>>S;
     vector<int> fragment;
     int answer=0;
+    
     count(0, len, S, fragment);
     count(1, len, S, fragment);
     for(int i=0;i<fragment.size();i++){
