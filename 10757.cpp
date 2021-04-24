@@ -16,7 +16,6 @@ int main(){
     int idx=0;
     int a_len=A.length(),b_len=B.length();
     for(int i=a_len-1;i>=0;i--){
-    
         a[idx++]=A[i]-'0';
     }
 
