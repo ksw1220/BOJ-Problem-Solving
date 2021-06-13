@@ -12,6 +12,33 @@ typedef struct pos
 } P;
 
 queue<pos> cheezes, remains;
+
+void CheckBlank(int N, int M)
+{
+    queue<pos> blanks;
+    bool visit[101][101];
+    blanks.push({0, 0});
+    visit[0][0] = true;
+
+    while (!blanks.empty())
+    {
+        pos now = blanks.front();
+        blanks.pop();
+
+        arr[now.x][now.y] = 2;
+        for (int dir = 0; dir < 4; dir++)
+        {
+            int tox = now.x + dx[dir];
+            int toy = now.y + dy[dir];
+            if (tox < 0 || toy < 0 || tox >= N || toy >= M)
+                continue;
+            if (visit[tox][toy] || arr[tox][toy] == 1)
+                continue;
+            visit[tox][toy] = true;
+            blanks.push({tox, toy});
+        }
+    }
+}
 int main()
 {
     int N, M, answer = 0;
@@ -29,9 +56,12 @@ int main()
             }
         }
     }
+    arr[0][0] = 2;
+
     while (!remains.empty())
     {
         answer++;
+        CheckBlank(N, M);
         while (!remains.empty())
         {
             cheezes.push(remains.front());
@@ -46,7 +76,7 @@ int main()
             {
                 int tox = now.x + dx[dir];
                 int toy = now.y + dy[dir];
-                if (arr[tox][toy] == 0)
+                if (arr[tox][toy] == 2)
                     cnt++;
             }
             if (cnt >= 2)
@@ -63,11 +93,11 @@ int main()
             for (int j = 0; j < M; j++)
             {
                 if (arr[i][j] == -1)
-                    arr[i][j] = 0;
+                    arr[i][j] = 2;
             }
         }
     }
 
-    printf("%d", answer);
+    printf("%d\n", answer);
     return 0;
 }
