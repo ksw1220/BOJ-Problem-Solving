@@ -6,19 +6,19 @@ using namespace std;
 int arr[101][101];
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, 1, 0, -1};
+int N, M;
+bool visit[101][101];
 typedef struct pos
 {
     int x, y;
 } P;
 
-queue<pos> cheezes, remains;
+queue<pos> cheezes, remains, blanks;
 
-void CheckBlank(int N, int M)
+void CheckBlank()
 {
-    queue<pos> blanks;
-    bool visit[101][101];
-    blanks.push({0, 0});
     visit[0][0] = true;
+    blanks.push({0, 0});
 
     while (!blanks.empty())
     {
@@ -30,18 +30,27 @@ void CheckBlank(int N, int M)
         {
             int tox = now.x + dx[dir];
             int toy = now.y + dy[dir];
+
             if (tox < 0 || toy < 0 || tox >= N || toy >= M)
                 continue;
             if (visit[tox][toy] || arr[tox][toy] == 1)
                 continue;
+
             visit[tox][toy] = true;
             blanks.push({tox, toy});
+        }
+    }
+    for (int i = 0; i <= 100; i++)
+    {
+        for (int j = 0; j <= 100; j++)
+        {
+            visit[i][j] = false;
         }
     }
 }
 int main()
 {
-    int N, M, answer = 0;
+    int answer = 0;
     scanf("%d %d", &N, &M);
 
     for (int i = 0; i < N; i++)
@@ -52,16 +61,14 @@ int main()
             if (arr[i][j] == 1)
             {
                 remains.push({i, j});
-                //printf("push %d %d\n",i,j);
             }
         }
     }
-    arr[0][0] = 2;
 
     while (!remains.empty())
     {
         answer++;
-        CheckBlank(N, M);
+        CheckBlank();
         while (!remains.empty())
         {
             cheezes.push(remains.front());
@@ -86,14 +93,6 @@ int main()
             else
             {
                 remains.push({now.x, now.y});
-            }
-        }
-        for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < M; j++)
-            {
-                if (arr[i][j] == -1)
-                    arr[i][j] = 2;
             }
         }
     }
