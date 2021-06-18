@@ -47,11 +47,13 @@ int main()
         else
             printf("%c", str[i]);
     }
+
     while (!operators.empty())
     {
         printf("%c", operators.top());
         operators.pop();
     }
+    
     printf("\n");
     return 0;
 }
