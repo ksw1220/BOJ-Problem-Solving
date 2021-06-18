@@ -2,9 +2,8 @@
 
 int main()
 {
-    int N, M;
+    int N, M, a, b;
     int package = 1001, individual = 1001;
-    int a, b;
     int answer = 0;
     scanf("%d %d", &N, &M);
     while (M--)
