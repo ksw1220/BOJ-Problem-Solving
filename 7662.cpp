@@ -11,8 +11,8 @@ int main()
     scanf("%d", &T);
     while (T--)
     {
-        priority_queue<pair<int, int>> maxHeap;
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
+        priority_queue<pair<int, int> > maxHeap;
+        priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > minHeap;
 
         int idx = 0;
         scanf("%d", &N);
