@@ -22,7 +22,7 @@ Matrix multipleMatrix(Matrix A, Matrix B)
     }
     return result;
 }
-// 15:10
+
 int main()
 {
     long long N;
