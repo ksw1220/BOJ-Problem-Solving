@@ -21,7 +21,7 @@ long long power(long long a)
 int main()
 {
     int M, N, S;
-    long long answer=0;
+    long long answer = 0;
     vector<int> vecN, vecS;
     scanf("%d", &M);
 
@@ -32,9 +32,10 @@ int main()
         vecS.push_back(S);
     }
 
-    for(int i=0;i<M;i++){
-        answer=(answer+vecS[i]*power(vecN[i]))%MOD;
+    for (int i = 0; i < M; i++)
+    {
+        answer = (answer + vecS[i] * power(vecN[i])) % MOD;
     }
-    printf("%lld\n",answer);
+    printf("%lld\n", answer);
     return 0;
 }
