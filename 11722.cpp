@@ -4,22 +4,22 @@
 
 using namespace std;
 
-int N,answer;
+int N, answer;
 vector<int> arr, dp;
 int dfs(int now)
 {
-    if (dp[now]!=0)
+    if (dp[now] != 0)
         return dp[now];
     int re = 0;
     for (int i = now + 1; i < N; i++)
     {
         if (arr[now] > arr[i])
         {
-            re = max(re,dfs(i));
+            re = max(re, dfs(i));
         }
     }
-    answer=max(answer,dp[now]=max(dp[now],re+1));
-    return re+1;
+    answer = max(answer, dp[now] = max(dp[now], re + 1));
+    return re + 1;
 }
 int main()
 {
@@ -31,10 +31,11 @@ int main()
         scanf("%d", &arr[i]);
     }
 
-    for(int i=0;i<N;i++){
+    for (int i = 0; i < N; i++)
+    {
         dfs(i);
     }
-    
-    printf("%d\n",answer);
+
+    printf("%d\n", answer);
     return 0;
 }
