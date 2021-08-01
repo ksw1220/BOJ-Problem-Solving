@@ -6,6 +6,7 @@ using namespace std;
 vector<vector<int>> arr, tmp;
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, 1, 0, -1};
+
 void diffusion(int R, int C, int a1, int a2)
 {
     tmp.assign(R, vector<int>(C, 0));
@@ -86,8 +87,10 @@ int main()
 {
     int R, C, T, answer;
     int a1 = -1, a2 = -1;
+
     scanf("%d %d %d", &R, &C, &T);
     arr.assign(R, vector<int>(C, 0));
+
     for (int i = 0; i < R; i++)
     {
         for (int j = 0; j < C; j++)
