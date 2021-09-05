@@ -19,6 +19,7 @@ bool isEqual(const vector<int> &A, const vector<int> &B)
     }
     return true;
 }
+
 void Combination(int idx, vector<int> &answer)
 {
     answer.push_back(numbers[idx]);
@@ -52,6 +53,7 @@ void Combination(int idx, vector<int> &answer)
     }
     answer.pop_back();
 }
+
 int main()
 {
     vector<int> tmp;
