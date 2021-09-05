@@ -28,6 +28,7 @@ void Combination(int idx, vector<int> &answer)
     }
     answer.pop_back();
 }
+
 int main()
 {
     vector<int> tmp;
