@@ -5,6 +5,7 @@ using namespace std;
 
 vector<int> numbers;
 vector<bool> visited;
+
 int N, M;
 void Combination(int idx, vector<int> &acc)
 {
@@ -31,6 +32,7 @@ void Combination(int idx, vector<int> &acc)
     acc.pop_back();
     visited[idx] = false;
 }
+
 int main()
 {
     vector<int> tmp;
