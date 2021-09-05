@@ -1,52 +1,29 @@
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
-
+#include <set>
 using namespace std;
 
 vector<int> numbers;
 vector<vector<int>> isExist;
+set<int> numberSet;
 int N, M;
-
-bool isEqual(const vector<int> &A, const vector<int> &B)
-{
-    if (A.size() != B.size())
-        return false;
-    for (int i = 0; i < A.size(); i++)
-    {
-        if (A[i] != B[i])
-            return false;
-    }
-    return true;
-}
 
 void Combination(int idx, vector<int> &answer)
 {
     answer.push_back(numbers[idx]);
     if (answer.size() == M)
     {
-        bool chk = false;
-        for (int i = 0; i < isExist.size(); i++)
+
+        for (int i = 0; i < M; i++)
         {
-            if (isEqual(isExist[i], answer))
-            {
-                chk = true;
-                break;
-            }
+            printf("%d ", answer[i]);
         }
-        if (!chk)
-        {
-            isExist.push_back(answer);
-            for (int i = 0; i < M; i++)
-            {
-                printf("%d ", answer[i]);
-            }
-            printf("\n");
-        }
+        printf("\n");
     }
     else
     {
-        for (int i = idx; i < N; i++)
+        for (int i = idx; i < numbers.size(); i++)
         {
             Combination(i, answer);
         }
@@ -59,15 +36,22 @@ int main()
     vector<int> tmp;
     scanf("%d %d", &N, &M);
 
-    numbers.assign(N, 0);
     for (int i = 0; i < N; i++)
     {
-        scanf("%d", &numbers[i]);
+        int input;
+        scanf("%d", &input);
+        numberSet.insert(input);
+    }
+
+    set<int>::iterator it;
+    for (it = numberSet.begin(); it != numberSet.end(); it++)
+    {
+        numbers.push_back(*it);
     }
 
     sort(numbers.begin(), numbers.end());
 
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < numbers.size(); i++)
     {
         if (i == 0 || numbers[i - 1] != numbers[i])
         {
