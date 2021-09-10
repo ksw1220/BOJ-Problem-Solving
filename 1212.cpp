@@ -23,14 +23,11 @@ string octToDec(char x)
 int main()
 {
     string s;
-    string tmp=octToDec(s[0]);
     cin >> s;
 
-    cout<<tmp<<endl;
-    while(!tmp[0]){
-        tmp.erase(tmp.begin());
-    }
-    cout<<tmp;
+    string tmp=octToDec(s[0]);
+   
+    cout<<stoi(tmp);
     for (int i = 1; i < s.length(); i++)
     {
         tmp = octToDec(s[i]);
