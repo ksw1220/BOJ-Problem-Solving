@@ -53,7 +53,6 @@ void airCondition(int R, int C, int a1, int a2)
     for (int i = 1; i < a1; i++)
         tmp[i][0] = arr[i - 1][0];
 
-    //downside
 
     for (int j = 2; j < C; j++)
         tmp[a2][j] = arr[a2][j - 1];
