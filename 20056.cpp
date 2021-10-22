@@ -12,10 +12,6 @@ vector<int> dy = {0, 1, 1, 1, 0, -1, -1, -1};
 vector<FIREBALL> fireBalls;
 vector<vector<vector<FIREBALL>>> board;
 int N;
-void printFireBall(FIREBALL fireball)
-{
-    cout << ": " << fireball.r << fireball.c << fireball.m << fireball.s << fireball.d << endl;
-}
 void move()
 {
     board.assign(N + 1, vector<vector<FIREBALL>>(N + 1, vector<FIREBALL>(0, {0, 0, 0, 0, 0})));
@@ -89,9 +85,7 @@ int main()
     int answer = 0;
     while (K--)
     {
-        answer = 0;
         move();
-
         mergeAndSplit();
 
         for (int i = 0; i < fireBalls.size(); i++)
