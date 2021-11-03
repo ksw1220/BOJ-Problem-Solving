@@ -1,102 +1,81 @@
-#include <stdio.h>
 #include <iostream>
-#include <queue>
+#include <vector>
 using namespace std;
 
-int arr[101][101];
-int dx[4] = {-1, 0, 1, 0};
-int dy[4] = {0, 1, 0, -1};
 int N, M;
-bool visit[101][101];
-typedef struct pos
+vector<int> dx = {-1, 0, 1, 0};
+vector<int> dy = {0, 1, 0, -1};
+vector<vector<int>> grid;
+vector<vector<bool>> visited;
+vector<pair<int, int>> cheezes, nextCheezes;
+
+void dfs(int x, int y)
 {
-    int x, y;
-} P;
-
-queue<pos> cheezes, remains, blanks;
-
-void CheckBlank()
-{
-    visit[0][0] = true;
-    blanks.push({0, 0});
-
-    while (!blanks.empty())
+    grid[x][y] = 2;
+    for (int dir = 0; dir < 4; dir++)
     {
-        pos now = blanks.front();
-        blanks.pop();
+        int tox = x + dx[dir];
+        int toy = y + dy[dir];
 
-        arr[now.x][now.y] = 2;
-        for (int dir = 0; dir < 4; dir++)
-        {
-            int tox = now.x + dx[dir];
-            int toy = now.y + dy[dir];
+        if (tox < 0 || toy < 0 || tox >= N || toy >= M || visited[tox][toy] || grid[tox][toy] == 1)
+            continue;
 
-            if (tox < 0 || toy < 0 || tox >= N || toy >= M)
-                continue;
-            if (visit[tox][toy] || arr[tox][toy] == 1)
-                continue;
-
-            visit[tox][toy] = true;
-            blanks.push({tox, toy});
-        }
-    }
-    for (int i = 0; i <= 100; i++)
-    {
-        for (int j = 0; j <= 100; j++)
-        {
-            visit[i][j] = false;
-        }
+        visited[tox][toy] = true;
+        dfs(tox, toy);
     }
 }
 int main()
 {
     int answer = 0;
-    scanf("%d %d", &N, &M);
-
+    cin >> N >> M;
+    grid.assign(N, vector<int>(M, 0));
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < M; j++)
         {
-            scanf("%d", &arr[i][j]);
-            if (arr[i][j] == 1)
+            cin >> grid[i][j];
+            if (grid[i][j] == 1)
             {
-                remains.push({i, j});
+                cheezes.push_back({i, j});
             }
         }
     }
 
-    while (!remains.empty())
+    while (cheezes.size())
     {
-        answer++;
-        CheckBlank();
-        while (!remains.empty())
+
+        visited.assign(N, vector<bool>(M, false));
+        visited[0][0] = true;
+        dfs(0, 0);
+
+        for (int i = 0; i < cheezes.size(); i++)
         {
-            cheezes.push(remains.front());
-            remains.pop();
-        }
-        while (!cheezes.empty())
-        {
-            pos now = cheezes.front();
-            cheezes.pop();
-            int cnt = 0;
+            int airCount = 0;
+            int x = cheezes[i].first;
+            int y = cheezes[i].second;
             for (int dir = 0; dir < 4; dir++)
             {
-                int tox = now.x + dx[dir];
-                int toy = now.y + dy[dir];
-                if (arr[tox][toy] == 2)
-                    cnt++;
+                int tox = x + dx[dir];
+                int toy = y + dy[dir];
+                if (tox < 0 || toy < 0 || tox >= N || toy >= M)
+                    continue;
+                if (grid[tox][toy] == 2)
+                    airCount++;
             }
-            if (cnt >= 2)
+            if (airCount >= 2)
             {
-                arr[now.x][now.y] = -1;
+                grid[x][y] = 0;
             }
             else
             {
-                remains.push({now.x, now.y});
+                nextCheezes.push_back({x, y});
             }
         }
+        answer++;
+        cheezes = nextCheezes;
+        nextCheezes.clear();
     }
 
-    printf("%d\n", answer);
+    cout << answer << endl;
     return 0;
 }
