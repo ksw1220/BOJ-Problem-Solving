@@ -1,29 +1,45 @@
-#include<stdio.h>
-#include<iostream>
-#include<algorithm>
-#define INF 987654321
+#include <iostream>
+#include <vector>
 using namespace std;
-int dp[101][101];
-int main() {
-	int N, M, a, b;
-	scanf("%d %d", &N, &M);
-	for (int i = 0; i <= N; i++)for (int j = 0; j <= N; j++)dp[i][j] = INF;
-	for (int i = 0; i <= N; i++)dp[i][i] = 0;
-	while (M--) {
-		scanf("%d %d", &a, &b);
-		dp[a][b] = 1;
-	}
-	for (int k = 1; k <= N; k++)
-		for (int i = 1; i <= N; i++)
-			for (int j = 1; j <= N; j++) {
-				dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
-			}
-	for (int i = 1; i <= N; i++) {
-		int cnt = 0;
-		for (int j = 1; j <= N; j++) {
-			if (dp[i][j] == INF&&dp[j][i]==INF)cnt++;
+
+vector<vector<vector<int>>> adj;
+vector<bool> visited;
+void dfs(int now, int dir, int &cnt)
+{
+	for (int i = 0; i < adj[dir][now].size(); i++)
+	{
+		int next = adj[dir][now][i];
+		if (!visited[next])
+		{
+			visited[next] = true;
+			cnt++;
+			dfs(next, dir, cnt);
 		}
-		printf("%d\n", cnt);
+	}
+}
+int main()
+{
+	int N, M, a, b;
+	cin >> N >> M;
+
+	adj.assign(2, vector<vector<int>>(N + 1, vector<int>(0, 0)));
+
+	while (M--)
+	{
+		cin >> a >> b;
+		adj[0][a].push_back(b);
+		adj[1][b].push_back(a);
+	}
+
+	for (int i = 1; i <= N; i++)
+	{
+		int count = 0;
+		visited.assign(N + 1, false);
+		visited[i] = true;
+		dfs(i, 0, count);
+		dfs(i, 1, count);
+
+		cout << N - count - 1 << endl;
 	}
 	return 0;
 }
