@@ -1,15 +1,38 @@
-#include<stdio.h>
-int arr[10001], dp[10001];
-int main() {
-	int N, M, ans = 0;
-	scanf("%d %d", &N, &M);
-	for (int i = 1; i <= N; i++)scanf("%d", &arr[i]);
-	for (int i = 1; i <= N; i++)arr[i] += arr[i - 1];
-	for (int i = 1; i <= N; i++) {
-		for (int j = i; j <= N; j++) {
-			if ((arr[j] - arr[j - i]) == M)ans++;
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<int> dp;
+int main()
+{
+	int N, M, input, answer = 0;
+	cin >> N >> M;
+	dp.assign(N + 1, 0);
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> input;
+		dp[i] = dp[i - 1] + input;
+	}
+
+	int l, r;
+	l = r = 1;
+	while (r <= N)
+	{
+		if (dp[r] - dp[l - 1] == M)
+		{
+			answer++;
+			l++;
+		}
+		else if (dp[r] - dp[l - 1] < M)
+		{
+			r++;
+		}
+		else
+		{
+			l++;
 		}
 	}
-	printf("%d", ans);
+	cout << answer << endl;
 	return 0;
 }
