@@ -1,34 +1,72 @@
-#include<stdio.h>
-#include<algorithm>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
-int graph[501][501];
-int T[501];
-int dp[501];
-int N, a, b;
-void dfs(int now) {
-	for (int i = 1; i <= N; i++) {
-		if (graph[now][i] == 1) {
-			if (dp[i] < dp[now] + T[i]) {
-				dp[i] = dp[now] + T[i];
-				dfs(i);
+
+vector<int> indegree, cost, dp;
+vector<vector<int>> graph;
+queue<pair<int, int>> que;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+
+	int N, a;
+	cin >> N;
+	indegree.assign(N + 1, false);
+	cost.assign(N + 1, 0);
+	dp.assign(N + 1, 0);
+	graph.assign(N + 1, vector<int>(0, 0));
+
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> cost[i];
+		while (1)
+		{
+			cin >> a;
+			if (a == -1)
+			{
+				break;
+			}
+			else
+			{
+				indegree[i]++;
+				graph[a].push_back(i);
 			}
 		}
 	}
-}
-int main() {
-	scanf("%d", &N);
-	for (int i = 1; i <= N; i++) {
-		scanf("%d", &T[i]);
-		dp[i] = T[i];
-		while (1) {
-			scanf("%d", &a);
-			if (a == -1)break;
-			graph[a][i] = 1;
-		 }
+
+	for (int i = 1; i <= N; i++)
+	{
+		if (!indegree[i])
+		{
+			dp[i] = cost[i];
+			que.push({i, cost[i]});
+		}
 	}
-	for (int i = 1; i <= N; i++) {
-		dfs(i);
+
+	while (!que.empty())
+	{
+		int now = que.front().first;
+		int nowCost = que.front().second;
+		que.pop();
+
+		for (int i = 0; i < graph[now].size(); i++)
+		{
+			int to = graph[now][i];
+			int toCost = nowCost + cost[to];
+			if (dp[to] < toCost)
+			{
+				dp[to] = toCost;
+				que.push({to, toCost});
+			}
+		}
 	}
-	for (int i = 1; i <= N; i++)printf("%d\n", dp[i]);
+
+	for (int i = 1; i <= N; i++)
+	{
+		cout << dp[i] << endl;
+	}
 	return 0;
 }
