@@ -1,29 +1,47 @@
-#include<stdio.h>
-int parent[1000001], num[1000001];
-int find(int now) {
-	if (parent[now] == now)return now;
-	else return parent[now] = find(parent[now]);
+#include <stdio.h>
+#include <vector>
+
+using namespace std;
+
+vector<int> parent;
+int find(int x)
+{
+	if (parent[x] == x)
+	{
+		return x;
+	}
+	else
+	{
+		return parent[x] = find(parent[x]);
+	}
 }
-int main() {
+int main()
+{
 	int N, M, op, a, b;
 	scanf("%d %d", &N, &M);
-	for (int i = 1; i <= N; i++) {
-		parent[i] = i;
-		num[i] = 1;
+	for (int i = 0; i <= N; i++)
+	{
+		parent.push_back(i);
 	}
-	while (M--) {
+	while (M--)
+	{
 		scanf("%d %d %d", &op, &a, &b);
-		int A, B;
-		A = find(a); B = find(b);
-		if (op == 0) {
-			if (num[a] >= num[b]) {
-				parent[A] = B;
-			}
-			else parent[B] = A;
+		a = find(a);
+		b = find(b);
+		if (op == 0)
+		{
+			parent[a] = b;
 		}
-		else {
-			if (A == B)printf("YES\n");
-			else printf("NO\n");
+		else if (op == 1)
+		{
+			if (a == b)
+			{
+				printf("YES\n");
+			}
+			else
+			{
+				printf("NO\n");
+			}
 		}
 	}
 	return 0;
