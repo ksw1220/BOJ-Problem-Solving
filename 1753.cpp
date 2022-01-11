@@ -1,38 +1,72 @@
-#include<stdio.h>
-#include<queue>
-#include<vector>
+#include <stdio.h>
+#include <vector>
+#include <queue>
 #define INF 987654321
 using namespace std;
-vector<pair<int, int>> graph[20001];
-priority_queue<pair<int,int>> pq;
-int main() {
-	int dist[20001];
-	int V, E, K, a, b, c;
+
+class Node
+{
+public:
+	int node, weight;
+	Node(int n, int w)
+	{
+		this->node = n;
+		this->weight = w;
+	}
+	bool operator<(const Node n) const
+	{
+		return weight > n.weight;
+	}
+};
+
+vector<vector<pair<int, int>>> graph;
+priority_queue<Node> pq;
+vector<int> dist;
+int main()
+{
+	int V, E, K, u, v, w;
 	scanf("%d %d", &V, &E);
 	scanf("%d", &K);
-	for (int i = 1; i <= V; i++)dist[i] = INF;
-	while (E--) {
-		scanf("%d %d %d", &a, &b, &c);
-		graph[a].push_back({ b,c });
+
+	graph.resize(V + 1);
+	dist.assign(V + 1, INF);
+	while (E--)
+	{
+		scanf("%d %d %d", &u, &v, &w);
+		graph[u].push_back({v, w});
 	}
-	pq.push({ -0,K });
+
+	pq.push(Node(K, 0));
 	dist[K] = 0;
-	while (!pq.empty()) {
-		int now = pq.top().second;
-		int nowDis = -pq.top().first;
+
+	while (!pq.empty())
+	{
+		int now = pq.top().node;
 		pq.pop();
-		for (int i = 0; i < graph[now].size(); i++) {
-			int to = graph[now][i].first; 
-			int toDis = graph[now][i].second + nowDis;
-			if (dist[to] > toDis) {
-				dist[to] = toDis;
-				pq.push({ -toDis,to });
+
+		for (int i = 0; i < graph[now].size(); i++)
+		{
+			int to = graph[now][i].first;
+			int toDist = graph[now][i].second + dist[now];
+
+			if (dist[to] > toDist)
+			{
+				dist[to] = toDist;
+				pq.push(Node(to, toDist));
 			}
 		}
 	}
-	for (int i = 1; i <= V; i++) {
-		if (dist[i] == INF)printf("INF\n");
-		else printf("%d\n", dist[i]);
+
+	for (int i = 1; i <= V; i++)
+	{
+		if (dist[i] == INF)
+		{
+			printf("INF\n");
+		}
+		else
+		{
+			printf("%d\n", dist[i]);
+		}
 	}
 	return 0;
-} 
+}
