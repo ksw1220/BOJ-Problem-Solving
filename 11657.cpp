@@ -1,48 +1,66 @@
-#include <iostream>
+#include <stdio.h>
 #include <vector>
-#include <algorithm>
+
 #define INF 987654321
 using namespace std;
-struct Edge
-{
-    long long start, end, weight;
-};
-vector<Edge> edges;
-long long dist[501];
+
+vector<vector<pair<int, long long>>> edge;
+vector<long long> dist;
 int main()
 {
-    int N, M;
-    long long a, b, c;
+
+    int N, M, A, B;
+    long long C;
+    bool updated;
     scanf("%d %d", &N, &M);
+    edge.resize(N + 1);
+    dist.assign(N + 1, INF);
     while (M--)
     {
-        scanf("%lld %lld %lld", &a, &b, &c);
-        edges.push_back({a, b, c});
+        scanf("%d %d %lld", &A, &B, &C);
+        edge[A].push_back({B, C});
     }
-    for (int i = 0; i <= N; i++)
-        dist[i] = INF;
+
     dist[1] = 0;
-    for (int iter = 1; iter <= N; iter++)
+    for (int iter = 0; iter < N; iter++)
     {
-        for (int i = 0; i < edges.size(); i++)
+        updated = false;
+        for (int here = 1; here <= N; here++)
         {
-            if (dist[edges[i].start] != INF && dist[edges[i].end] > dist[edges[i].start] + edges[i].weight)
+            for (int i = 0; i < edge[here].size(); i++)
             {
-                dist[edges[i].end] = dist[edges[i].start] + edges[i].weight;
-                if (iter == N)
+                int there = edge[here][i].first;
+                long long nextCost = dist[here] + edge[here][i].second;
+                if (dist[here] != INF && dist[there] > nextCost)
                 {
-                    cout << -1;
-                    return 0;
+                    dist[there] = nextCost;
+                    updated = true;
                 }
             }
         }
+        if (!updated)
+        {
+            break;
+        }
     }
-    for (int i = 2; i <= N; i++)
+
+    if (updated)
     {
-        if (dist[i] >= INF)
-            cout << -1 << endl;
-        else
-            cout << dist[i] << endl;
+        printf("-1\n");
+    }
+    else
+    {
+        for (int i = 2; i <= N; i++)
+        {
+            if (dist[i] == INF)
+            {
+                printf("-1\n");
+            }
+            else
+            {
+                printf("%lld\n", dist[i]);
+            }
+        }
     }
     return 0;
 }
