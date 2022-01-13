@@ -31,20 +31,16 @@ int main()
             {
                 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - cost[i]] + memory[i]);
             }
-            else{
-                dp[i][j]=dp[i-1][j];
+            else
+            {
+                dp[i][j] = dp[i - 1][j];
             }
         }
     }
 
     for (int i = 0; i <= MAX_COST; i++)
     {
-        int tmp = 0;
-        for (int j = 1; j <= N; j++)
-        {
-            tmp = max(tmp, dp[j][i]);
-        }
-        if (tmp >= M)
+        if (dp[N][i] >= M)
         {
             cout << i << endl;
             break;
