@@ -1,45 +1,64 @@
-#include<stdio.h>
-#include<iostream>
-#include<algorithm>
-#include<vector>
-#include<stack>
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
+#include <stack>
 using namespace std;
-int num[1000001], dp[1000001], pre[1000001];
-vector<int> v, index;
-stack<int> ans;
-int main() {
-	int N;
-	scanf("%d", &N);
 
-	for (int i = 0; i < N; i++)scanf("%d", &num[i]);
-	v.push_back(num[0]);
-	index.push_back(0);
+vector<int> A, pre, v, vIndex;
+stack<int> answer;
+int main()
+{
+	int N, track;
+	scanf("%d", &N);
+	A.resize(N);
+	pre.resize(N);
+
+	for (int i = 0; i < N; i++)
+	{
+		scanf("%d", &A[i]);
+	}
+
+	v.push_back(A[0]);
+	vIndex.push_back(0);
 	pre[0] = -1;
-	for (int i = 1; i < N; i++) {
-		int idx = lower_bound(v.begin(), v.end(), num[i]) - v.begin();
-		if (idx == v.size()) {
-			pre[i] = index[idx - 1];
-			index.push_back(i);
-			v.push_back(num[i]);
+
+	for (int i = 1; i < N; i++)
+	{
+		int idx = lower_bound(v.begin(), v.end(), A[i]) - v.begin();
+		if (idx == v.size())
+		{
+			v.push_back(A[i]);
+			vIndex.push_back(i);
+			pre[i] = vIndex[idx - 1];
 		}
-		else {
-			if (idx == 0)pre[i] = -1;
-			else pre[i] = index[idx - 1];
-			v[idx] = num[i];	
-			index[idx] = i;
+		else
+		{
+			v[idx] = A[i];
+			vIndex[idx] = i;
+			if (idx == 0)
+			{
+				pre[i] = -1;
+			}
+			else
+			{
+				pre[i] = vIndex[idx - 1];
+			}
 		}
 	}
-	int cnt = 0;
-    int now = index[v.size() - 1];
-	while (now != -1) {
-		cnt++;
-		ans.push(num[now]);
-		now = pre[now];
+
+	track = vIndex[vIndex.size() - 1];
+
+	while (track != -1)
+	{
+		answer.push(track);
+		track = pre[track];
 	}
-	printf("%d\n", cnt);
-	while (!ans.empty()) {
-		printf("%d ", ans.top());
-		ans.pop();
+
+	printf("%d\n", (int)answer.size());
+	while (!answer.empty())
+	{
+		printf("%d ", A[answer.top()]);
+		answer.pop();
 	}
 	return 0;
 }
