@@ -1,96 +1,100 @@
-#include <iostream>
+#include <stdio.h>
 #include <vector>
 #include <algorithm>
-#include <numeric>
-#define INF 987654321
+#define INF 1000000001
 using namespace std;
 
 class SegmentTree
 {
 public:
     typedef pair<int, int> dtype;
-
     vector<dtype> tree;
-
     int s;
-
-    SegmentTree(int N)
+    int answer = 0;
+    SegmentTree(int n)
     {
-        for (s = 1; s < N; s *= 2)
+        for (s = 1; s <= n; s *= 2)
         {
         }
         tree.resize(s * 2);
-        for (int i = 1; i < s * 2; i++)
-            tree[i] = {-1, INF};
+        for (int i = 0; i < s * 2; i++)
+        {
+            tree[i] = {INF, 0};
+        }
     }
 
     void insert(vector<dtype> &d)
     {
         for (int i = s; i < s + d.size(); i++)
-            tree[i] = d[i - s];
-        for (int i = s - 1; i >= 1; i--)
         {
-            tree[i] = tree[i * 2].second < tree[i * 2 + 1].second ? tree[i * 2] : tree[i * 2 + 1];
+            tree[i] = d[i - s];
+        }
+        for (int i = s - 1; i >= 0; i--)
+        {
+            tree[i] = tree[i * 2].first < tree[i * 2 + 1].first ? tree[i * 2] : tree[i * 2 + 1];
         }
     }
 
     dtype getMin(int Left, int Right)
     {
         int l = Left + s - 1, r = Right + s - 1;
-        dtype rval = {-1, INF};
+        dtype rval = {INF, 0};
         while (l <= r)
         {
             if (l % 2 == 0)
+            {
                 l /= 2;
+            }
             else
             {
-                rval = rval.second < tree[l].second ? rval : tree[l];
-                l = (l / 2) + 1;
+                rval = rval.first < tree[l].first ? rval : tree[l];
+                l = l / 2 + 1;
             }
             if (r % 2 == 1)
+            {
                 r /= 2;
+            }
             else
             {
-                rval = rval.second < tree[r].second ? rval : tree[r];
-                r = (r / 2) - 1;
+                rval = rval.first < tree[r].first ? rval : tree[r];
+                r = r / 2 - 1;
             }
         }
         return rval;
     }
-};
 
-int solution(SegmentTree *T, int left, int right)
-{
-    if (left > right)
+    void solution(int Left, int Right)
     {
-        return 0;
-    }
-    pair<int, int> tmp = T->getMin(left, right);
-    int re = tmp.second * (right - left + 1);
-    int idx = tmp.first + 1;
-    if (idx != left)
-        re = max(re, solution(T, left, idx - 1));
-    if (idx != right)
-        re = max(re, solution(T, idx + 1, right));
+        if (Left > Right)
+        {
+            return;
+        }
+        dtype val = getMin(Left, Right);
+        answer = max(answer, val.first * (Right - Left + 1));
 
-    return re;
-}
+        solution(Left, val.second - 1);
+        solution(val.second + 1, Right);
+    }
+};
+vector<pair<int, int>> arr;
+
 int main()
 {
-    int N, m;
+    int N;
 
-    cin >> N;
-
-    SegmentTree t(N);
-
-    vector<pair<int, int>> v(N);
-
+    scanf("%d", &N);
+    arr.assign(N, {0, 0});
     for (int i = 0; i < N; i++)
     {
-        v[i].first = i;
-        cin >> v[i].second;
+        scanf("%d", &arr[i].first);
+        arr[i].second = i + 1;
     }
 
-    t.insert(v);
-    cout << solution(&t, 1, N);
+    SegmentTree t(N);
+    t.insert(arr);
+    t.solution(1, N);
+
+    printf("%d\n", t.answer);
+
+    return 0;
 }
